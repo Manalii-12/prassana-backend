@@ -61,8 +61,12 @@ function initDatabase() {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`✅ Server running on port ${PORT}`);
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok", timestamp: new Date() });
+});
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`✅ Server running on 0.0.0.0:${PORT}`);
   // Run auto-init
   setTimeout(initDatabase, 1500);
 });
