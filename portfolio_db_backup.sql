@@ -35,6 +35,7 @@ CREATE TABLE `admin_users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO `admin_users` (`id`, `name`, `email`, `password`, `created_at`) VALUES (1, 'Admin', 'admin@gmail.com', '$2b$10$KtMrZitZVBTWhhWf6..jHOJqAqwwWukqzOapUlEw6/Wfhl9oY6Rve', '2026-06-21 23:23:13.000');
+INSERT INTO `admin_users` (`id`, `name`, `email`, `password`, `created_at`) VALUES (2, 'Prasanna', 'prasannaofficials@gmail.com', '$2b$10$C063ycEqYWV1OpZE5BiKm.Crv0CeqLl/n7x038JWOgG9Uods4zyFC', '2026-09-27 14:00:00.000');
 
 DROP TABLE IF EXISTS `contact_details`;
 CREATE TABLE `contact_details` (
