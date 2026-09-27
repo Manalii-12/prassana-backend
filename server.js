@@ -20,6 +20,9 @@ const contactRoutes = require("./routes/contactRoutes");
 app.use(cors());
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
+app.use("/uploads", (req, res) => {
+  res.redirect("https://prassana-portfolio.vercel.app/images/commercial.jpg");
+});
 app.use("/api/projects", projectRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/hero", heroRoutes);
