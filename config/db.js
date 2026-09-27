@@ -5,11 +5,19 @@ const mysql = require("mysql2");
 let db;
 
 if (process.env.MYSQL_URL) {
-  const url = process.env.MYSQL_URL.includes("?")
-    ? `${process.env.MYSQL_URL}&multipleStatements=true`
-    : `${process.env.MYSQL_URL}?multipleStatements=true`;
+  let url = process.env.MYSQL_URL;
+  if (!url.includes("multipleStatements=true")) {
+    url += (url.includes("?") ? "&" : "?") + "multipleStatements=true";
+  }
+  if (!url.includes("ssl=") && !url.includes("localhost") && !url.includes("127.0.0.1")) {
+    url += "&ssl={\"rejectUnauthorized\":false}";
+  }
   db = mysql.createPool(url);
 } else {
+  const isRemote =
+    (process.env.MYSQLHOST && !process.env.MYSQLHOST.includes("localhost") && !process.env.MYSQLHOST.includes("127.0.0.1")) ||
+    (process.env.DB_HOST && !process.env.DB_HOST.includes("localhost") && !process.env.DB_HOST.includes("127.0.0.1"));
+
   db = mysql.createPool({
     host: process.env.MYSQLHOST || process.env.DB_HOST || "localhost",
     user: process.env.MYSQLUSER || process.env.DB_USER || "root",
@@ -20,6 +28,7 @@ if (process.env.MYSQL_URL) {
     connectionLimit: 10,
     queueLimit: 0,
     multipleStatements: true,
+    ...(isRemote || process.env.DB_SSL === "true" ? { ssl: { rejectUnauthorized: false } } : {}),
   });
 }
 
