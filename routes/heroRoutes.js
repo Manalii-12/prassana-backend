@@ -111,7 +111,7 @@ router.put("/reorder", (req, res) => {
 // Add New Hero Banner
 // ===============================
 router.post("/", (req, res) => {
-  let { title, subtitle, description, background_image, video_url } = req.body;
+  let { title, subtitle, description, background_image, mobile_background_image, video_url } = req.body;
 
   if (!background_image) {
     background_image = "/images/hero.png";
@@ -121,8 +121,8 @@ router.post("/", (req, res) => {
 
   const sql = `
     INSERT INTO hero_section
-    (title, subtitle, description, background_image, video_url, order_index)
-    VALUES (?, ?, ?, ?, ?, (SELECT COALESCE(MAX(hs.order_index), 0) + 1 FROM (SELECT order_index FROM hero_section) hs))
+    (title, subtitle, description, background_image, mobile_background_image, video_url, order_index)
+    VALUES (?, ?, ?, ?, ?, ?, (SELECT COALESCE(MAX(hs.order_index), 0) + 1 FROM (SELECT order_index FROM hero_section) hs))
   `;
 
   db.query(
@@ -132,6 +132,7 @@ router.post("/", (req, res) => {
       subtitle || "",
       description || "",
       background_image || "/images/hero.png",
+      mobile_background_image || null,
       video_url || "",
     ],
     (err, result) => {
@@ -157,7 +158,7 @@ router.post("/", (req, res) => {
 // ===============================
 router.put("/:id", (req, res) => {
   const { id } = req.params;
-  let { title, subtitle, description, background_image, video_url } = req.body;
+  let { title, subtitle, description, background_image, mobile_background_image, video_url } = req.body;
 
   if (video_url) {
     video_url = getEmbedUrl(video_url);
@@ -170,6 +171,7 @@ router.put("/:id", (req, res) => {
       subtitle = ?,
       description = ?,
       background_image = ?,
+      mobile_background_image = ?,
       video_url = ?,
       updated_at = NOW()
     WHERE id = ?
@@ -182,6 +184,7 @@ router.put("/:id", (req, res) => {
       subtitle || "",
       description || "",
       background_image || "/images/hero.png",
+      mobile_background_image || null,
       video_url || "",
       id,
     ],
