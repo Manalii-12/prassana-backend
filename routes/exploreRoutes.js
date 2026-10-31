@@ -90,24 +90,22 @@ router.post("/", (req, res) => {
       db.query(
         insertSql,
         [
-          heading || "Explore My Work",
-          subheading || "Portfolio",
-          commercial_title || "Commercial Projects",
-          commercial_subtitle || "Brand Campaigns & Directed Films",
+          heading !== undefined ? heading : "Explore My Work",
+          subheading !== undefined ? subheading : "Portfolio",
+          commercial_title !== undefined ? commercial_title : "Commercial Projects",
+          commercial_subtitle !== undefined ? commercial_subtitle : "",
           commercial_image || "/images/commercial.jpg",
-          personal_title || "Personal Projects",
-          personal_subtitle || "Documentaries & Narrative Stories",
+          personal_title !== undefined ? personal_title : "Personal Projects",
+          personal_subtitle !== undefined ? personal_subtitle : "",
           personal_image || "/images/personal.jpg",
-          commercial_page_badge || "Commercial Showcase",
-          commercial_page_subtitle || "Brand Films & Commercials",
-          commercial_page_title || "Commercial Projects",
-          commercial_page_description ||
-            "High-impact brand campaigns, automotive reels, and directed commercial films created for TV & digital screens.",
-          personal_page_badge || "Personal Showcase",
-          personal_page_subtitle || "Narrative & Documentaries",
-          personal_page_title || "Personal Projects",
-          personal_page_description ||
-            "Independent films, culture stories, and personal cinematic journeys captured with raw human emotion.",
+          commercial_page_badge !== undefined ? commercial_page_badge : "Commercial Showcase",
+          commercial_page_subtitle !== undefined ? commercial_page_subtitle : "Brand Films & Commercials",
+          commercial_page_title !== undefined ? commercial_page_title : "Commercial Projects",
+          commercial_page_description !== undefined ? commercial_page_description : "",
+          personal_page_badge !== undefined ? personal_page_badge : "Personal Showcase",
+          personal_page_subtitle !== undefined ? personal_page_subtitle : "Narrative & Documentaries",
+          personal_page_title !== undefined ? personal_page_title : "Personal Projects",
+          personal_page_description !== undefined ? personal_page_description : "",
         ],
         (insertErr) => {
           if (insertErr) {
@@ -135,30 +133,29 @@ router.post("/", (req, res) => {
           personal_page_badge = ?,
           personal_page_subtitle = ?,
           personal_page_title = ?,
-          personal_page_description = ?
+          personal_page_description = ?,
+          updated_at = NOW()
         WHERE id = ?
       `;
       db.query(
         updateSql,
         [
-          heading || "Explore My Work",
-          subheading || "Portfolio",
-          commercial_title || "Commercial Projects",
-          commercial_subtitle || "",
+          heading !== undefined ? heading : "",
+          subheading !== undefined ? subheading : "",
+          commercial_title !== undefined ? commercial_title : "",
+          commercial_subtitle !== undefined ? commercial_subtitle : "",
           commercial_image || "/images/commercial.jpg",
-          personal_title || "Personal Projects",
-          personal_subtitle || "",
+          personal_title !== undefined ? personal_title : "",
+          personal_subtitle !== undefined ? personal_subtitle : "",
           personal_image || "/images/personal.jpg",
-          commercial_page_badge || "Commercial Showcase",
-          commercial_page_subtitle || "Brand Films & Commercials",
-          commercial_page_title || "Commercial Projects",
-          commercial_page_description ||
-            "High-impact brand campaigns, automotive reels, and directed commercial films created for TV & digital screens.",
-          personal_page_badge || "Personal Showcase",
-          personal_page_subtitle || "Narrative & Documentaries",
-          personal_page_title || "Personal Projects",
-          personal_page_description ||
-            "Independent films, culture stories, and personal cinematic journeys captured with raw human emotion.",
+          commercial_page_badge !== undefined ? commercial_page_badge : "",
+          commercial_page_subtitle !== undefined ? commercial_page_subtitle : "",
+          commercial_page_title !== undefined ? commercial_page_title : "",
+          commercial_page_description !== undefined ? commercial_page_description : "",
+          personal_page_badge !== undefined ? personal_page_badge : "",
+          personal_page_subtitle !== undefined ? personal_page_subtitle : "",
+          personal_page_title !== undefined ? personal_page_title : "",
+          personal_page_description !== undefined ? personal_page_description : "",
           rows[0].id,
         ],
         (updateErr) => {

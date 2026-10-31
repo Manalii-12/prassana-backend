@@ -69,8 +69,8 @@ router.post("/", (req, res) => {
       db.query(
         insertSql,
         [
-          heading || "ABOUT ME",
-          subheading || "DIRECTOR & CINEMATOGRAPHER",
+          heading !== undefined ? heading : "ABOUT ME",
+          subheading !== undefined ? subheading : "DIRECTOR & CINEMATOGRAPHER",
           bio_p1 !== undefined ? bio_p1 : "",
           bio_p2 !== undefined ? bio_p2 : "",
           image_url || "/images/about.jpg",
@@ -108,8 +108,8 @@ router.post("/", (req, res) => {
       db.query(
         updateSql,
         [
-          heading || "ABOUT ME",
-          subheading || "DIRECTOR & CINEMATOGRAPHER",
+          heading !== undefined ? heading : "",
+          subheading !== undefined ? subheading : "",
           bio_p1 !== undefined ? bio_p1 : "",
           bio_p2 !== undefined ? bio_p2 : "",
           image_url || "/images/about.jpg",
