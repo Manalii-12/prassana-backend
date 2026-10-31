@@ -6,6 +6,10 @@ const db = require("../config/db");
 // Get Explore Section Settings
 // ===============================
 router.get("/", (req, res) => {
+  res.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+  res.set("Pragma", "no-cache");
+  res.set("Expires", "0");
+
   const sql = "SELECT * FROM explore_section ORDER BY id DESC LIMIT 1";
 
   db.query(sql, (err, result) => {
@@ -26,6 +30,16 @@ router.get("/", (req, res) => {
         personal_title: "Personal Projects",
         personal_subtitle: "Documentaries & Narrative Stories",
         personal_image: "/images/personal.jpg",
+        commercial_page_badge: "Commercial Showcase",
+        commercial_page_subtitle: "Brand Films & Commercials",
+        commercial_page_title: "Commercial Projects",
+        commercial_page_description:
+          "High-impact brand campaigns, automotive reels, and directed commercial films created for TV & digital screens.",
+        personal_page_badge: "Personal Showcase",
+        personal_page_subtitle: "Narrative & Documentaries",
+        personal_page_title: "Personal Projects",
+        personal_page_description:
+          "Independent films, culture stories, and personal cinematic journeys captured with raw human emotion.",
       });
     }
   });
@@ -44,6 +58,14 @@ router.post("/", (req, res) => {
     personal_title,
     personal_subtitle,
     personal_image,
+    commercial_page_badge,
+    commercial_page_subtitle,
+    commercial_page_title,
+    commercial_page_description,
+    personal_page_badge,
+    personal_page_subtitle,
+    personal_page_title,
+    personal_page_description,
   } = req.body;
 
   // Check if row exists
@@ -56,8 +78,14 @@ router.post("/", (req, res) => {
     if (rows.length === 0) {
       const insertSql = `
         INSERT INTO explore_section 
-        (heading, subheading, commercial_title, commercial_subtitle, commercial_image, personal_title, personal_subtitle, personal_image)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        (
+          heading, subheading, 
+          commercial_title, commercial_subtitle, commercial_image, 
+          personal_title, personal_subtitle, personal_image,
+          commercial_page_badge, commercial_page_subtitle, commercial_page_title, commercial_page_description,
+          personal_page_badge, personal_page_subtitle, personal_page_title, personal_page_description
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `;
       db.query(
         insertSql,
@@ -70,9 +98,22 @@ router.post("/", (req, res) => {
           personal_title || "Personal Projects",
           personal_subtitle || "Documentaries & Narrative Stories",
           personal_image || "/images/personal.jpg",
+          commercial_page_badge || "Commercial Showcase",
+          commercial_page_subtitle || "Brand Films & Commercials",
+          commercial_page_title || "Commercial Projects",
+          commercial_page_description ||
+            "High-impact brand campaigns, automotive reels, and directed commercial films created for TV & digital screens.",
+          personal_page_badge || "Personal Showcase",
+          personal_page_subtitle || "Narrative & Documentaries",
+          personal_page_title || "Personal Projects",
+          personal_page_description ||
+            "Independent films, culture stories, and personal cinematic journeys captured with raw human emotion.",
         ],
         (insertErr) => {
-          if (insertErr) return res.status(500).json({ success: false, message: "Insert error" });
+          if (insertErr) {
+            console.error(insertErr);
+            return res.status(500).json({ success: false, message: "Insert error" });
+          }
           res.json({ success: true, message: "Explore section saved successfully" });
         }
       );
@@ -86,7 +127,15 @@ router.post("/", (req, res) => {
           commercial_image = ?,
           personal_title = ?,
           personal_subtitle = ?,
-          personal_image = ?
+          personal_image = ?,
+          commercial_page_badge = ?,
+          commercial_page_subtitle = ?,
+          commercial_page_title = ?,
+          commercial_page_description = ?,
+          personal_page_badge = ?,
+          personal_page_subtitle = ?,
+          personal_page_title = ?,
+          personal_page_description = ?
         WHERE id = ?
       `;
       db.query(
@@ -95,11 +144,21 @@ router.post("/", (req, res) => {
           heading || "Explore My Work",
           subheading || "Portfolio",
           commercial_title || "Commercial Projects",
-          commercial_subtitle || "Brand Campaigns & Directed Films",
+          commercial_subtitle || "",
           commercial_image || "/images/commercial.jpg",
           personal_title || "Personal Projects",
-          personal_subtitle || "Documentaries & Narrative Stories",
+          personal_subtitle || "",
           personal_image || "/images/personal.jpg",
+          commercial_page_badge || "Commercial Showcase",
+          commercial_page_subtitle || "Brand Films & Commercials",
+          commercial_page_title || "Commercial Projects",
+          commercial_page_description ||
+            "High-impact brand campaigns, automotive reels, and directed commercial films created for TV & digital screens.",
+          personal_page_badge || "Personal Showcase",
+          personal_page_subtitle || "Narrative & Documentaries",
+          personal_page_title || "Personal Projects",
+          personal_page_description ||
+            "Independent films, culture stories, and personal cinematic journeys captured with raw human emotion.",
           rows[0].id,
         ],
         (updateErr) => {
