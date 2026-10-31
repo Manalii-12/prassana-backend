@@ -18,6 +18,17 @@ const eventRoutes = require("./routes/eventRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 
 app.use(cors());
+
+// Disable caching for all API endpoints so admin edits reflect on the live site immediately
+app.use((req, res, next) => {
+  if (req.path.startsWith("/api/") && !req.path.startsWith("/api/upload/media/")) {
+    res.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    res.set("Pragma", "no-cache");
+    res.set("Expires", "0");
+  }
+  next();
+});
+
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 app.use("/uploads", (req, res) => {
